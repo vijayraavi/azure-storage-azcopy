@@ -84,7 +84,9 @@ func NewConcurrencySettings(maxFileAndSocketHandles int) ConcurrencySettings {
 	// on Windows when this value was set to 500 but there were 1000 to 2000 goroutines in the
 	// main pool size.
 	// By setting this number equal to the max possible pool size, we are guaranteed to avoid that
-	// problem
+	// problem. (Incidentally, the dialRateLimiter type subsequently added to NewAzcopyHTTPClient also
+	// would prevent the 10,000 thread issue, but it would not prevent connections being removed
+	// from the pool and then needed again moments later, so we'll keep this value set as-is)
 	s.MaxIdleConnections = maxMainPoolSize
 
 	return s
